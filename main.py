@@ -74,17 +74,19 @@ def click():
     output_labels.clear()
     if name_counts_total=={}:#没有找到对应的人名
         output=tk.Label(window,text="没有找到对应的人名",fg="red")
-        output.pack()
+        output.place(x=50,y=130)
         output_labels.append(output)
     elif name_counts_total=="no file":#文件不存在
         output=tk.Label(window,text="没有找到对应的文件",fg="red")
-        output.pack()
+        output.place(x=50,y=130)
         output_labels.append(output)
     else:
+        y_coordinates=130
         for name,count in name_counts_total.items():
             output=tk.Label(window,text=f"{name}: {count} 次")
-            output.pack()
+            output.place(x=50,y=y_coordinates)
             output_labels.append(output)
+            y_coordinates+=30
 
 button_start=tk.Button(window,text="开始统计",command=click,font=("微软雅黑",14,"bold"),fg="blue")#创建按钮
 button_start.place(x=230,y=70)#显示按钮
