@@ -39,7 +39,7 @@ def namelistshow():
         namelist=("泽村 英梨梨","安艺 伦也","加藤 惠","霞之丘 诗羽","波岛 出海","冰堂 美智留","波岛 伊织","泽村 小百合","姬川 时乃","森丘 蓝子")
         global labelist
         labelist=tk.Listbox(window,listvariable=tk.StringVar(value=namelist))#创建列表框
-        labelist.place(x=50,y=120)#显示列表框
+        labelist.place(x=170,y=70)#显示列表框
         labelist.bind("<<ListboxSelect>>",on_select)#绑定事件处理函数
     else:
         labelist.place_forget()#隐藏列表框
@@ -52,18 +52,33 @@ def namelisthide():
     namelistshow_flag=False
 
 button_list=tk.Button(window,text="主要人物",command=namelistshow)#创建按钮
-button_list.place(x=50,y=70)#显示按钮
+button_list.place(x=58,y=70)#显示按钮
 ToolTip(button_list,"点击查看主要人物列表")
 
 def import_file():
     global file_path
     file_path=tk.filedialog.askopenfilename(title="选择文件", filetypes=[("文本文档", "*.txt")])#获取文件路径
 
+def import_path():
+    global file_path
+    file_path=tk.filedialog.askdirectory(title="选择文件夹")#获取文件夹路径
+
+def import_defaultfile():
+    global file_path
+    file_path="data"
+
 button_importfile=tk.Button(window,text="导入其他文件",command=import_file)#创建按钮
-button_importfile.place(x=400,y=10)#显示按钮
+button_importfile.place(x=390,y=50)#显示按钮
 ToolTip(button_importfile,"请导入.txt文件")
+button_importdefaultfile=tk.Button(window,text="导入默认文件",command=import_defaultfile)#创建按钮
+button_importdefaultfile.place(x=390,y=10)#显示按钮
+ToolTip(button_importdefaultfile,"导入默认文件")
+button_importpath=tk.Button(window,text="导入文件夹",command=import_path)#创建按钮
+button_importpath.place(x=390,y=90)#显示按钮
+ToolTip(button_importpath,"请导入文件夹")
 output_labels=[]
 print(file_path)
+
 
 def click():
     namelisthide()
@@ -74,22 +89,22 @@ def click():
     output_labels.clear()
     if name_counts_total=={}:#没有找到对应的人名
         output=tk.Label(window,text="没有找到对应的人名",fg="red")
-        output.place(x=50,y=130)
+        output.place(x=170,y=70)
         output_labels.append(output)
     elif name_counts_total=="no file":#文件不存在
         output=tk.Label(window,text="没有找到对应的文件",fg="red")
-        output.place(x=50,y=130)
+        output.place(x=170,y=70)
         output_labels.append(output)
     else:
-        y_coordinates=130
+        y_coordinates=70
         for name,count in name_counts_total.items():
             output=tk.Label(window,text=f"{name}: {count} 次")
-            output.place(x=50,y=y_coordinates)
+            output.place(x=170,y=y_coordinates)
             output_labels.append(output)
             y_coordinates+=30
 
 button_start=tk.Button(window,text="开始统计",command=click,font=("微软雅黑",14,"bold"),fg="blue")#创建按钮
-button_start.place(x=230,y=70)#显示按钮
+button_start.place(x=50,y=120)#显示按钮
 button_exit=tk.Button(window,text="退出",command=window.quit)#创建按钮
 button_exit.pack(fill=tkinter.X,side=tk.BOTTOM)#显示按钮
 window.mainloop()#显示窗口
