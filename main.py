@@ -4,6 +4,7 @@ import tkinter.font
 import tkinter.filedialog
 import os
 from tooltip import ToolTip
+from charaicon import CharaIconButton
 
 global file_path,namelistshow_flag
 namelistshow_flag=False
@@ -12,11 +13,12 @@ window=tk.Tk()#创建窗口
 default_font = tkinter.font.nametofont("TkDefaultFont")#设置默认字体
 default_font.configure(family="微软雅黑",size=12)
 window.title("《路人女主的养成方法》轻小说人名统计")
-window.geometry("512x512")
 window.resizable(False,False)#设置窗口大小不可变
-left=(window.winfo_screenwidth()-512)/2#获取窗口左上角的横坐标
-top=(window.winfo_screenheight()-512)/2#获取窗口左上角的纵坐标
-window.geometry("%dx%d+%d+%d"%(512,512,left,top))#设置窗口的初始位置和大小
+length=512
+width=640
+left=(window.winfo_screenwidth()-length)/2#获取窗口左上角的横坐标
+top=(window.winfo_screenheight()-width)/2#获取窗口左上角的纵坐标
+window.geometry("%dx%d+%d+%d"%(length,width,left,top))#设置窗口的初始位置和大小
 window.iconbitmap(os.path.join(os.path.dirname(__file__)+"/resource","icon.ico"))#设置窗口图标
 
 input_names=tk.StringVar()#创建输入框的变量
@@ -78,6 +80,30 @@ button_importpath.place(x=390,y=90)
 ToolTip(button_importpath,"请导入文件夹")
 output_labels=[]
 print(file_path)
+
+aki_button=CharaIconButton(window,chara_name="安艺 伦也",input_var=input_names,image_path=os.path.join(os.path.dirname(__file__)+"/resource","Aki_Tomoya.png"),width=140,height=140)
+aki_button.place(x=20,y=300)
+ToolTip(aki_button,"安艺 伦也")
+
+Eriri_button=CharaIconButton(window,chara_name="泽村 英梨梨",input_var=input_names,image_path=os.path.join(os.path.dirname(__file__)+"/resource","Sawamura_Spencer_Eriri.png"),width=140,height=140)
+Eriri_button.place(x=190,y=300)
+ToolTip(Eriri_button,"泽村 英梨梨")
+
+Megumi_button=CharaIconButton(window,chara_name="加藤 惠",input_var=input_names,image_path=os.path.join(os.path.dirname(__file__)+"/resource","Kato_Megumi.png"),width=140,height=140)
+Megumi_button.place(x=360,y=300)
+ToolTip(Megumi_button,"加藤 惠")
+
+Utaha_button=CharaIconButton(window,chara_name="霞之丘 诗羽",input_var=input_names,image_path=os.path.join(os.path.dirname(__file__)+"/resource","Kasumigaoka_Utaha.png"),width=140,height=140)
+Utaha_button.place(x=20,y=450)
+ToolTip(Utaha_button,"霞之丘 诗羽")
+
+Izumi_button=CharaIconButton(window,chara_name="波岛 出海",input_var=input_names,image_path=os.path.join(os.path.dirname(__file__)+"/resource","Hashima_Izumi.png"),width=140,height=140)
+Izumi_button.place(x=190,y=450)
+ToolTip(Izumi_button,"波岛 出海")
+
+Michiru_button=CharaIconButton(window,chara_name="冰堂 美智留",input_var=input_names,image_path=os.path.join(os.path.dirname(__file__)+"/resource","Hyodo_Michiru.png"),width=140,height=140)
+Michiru_button.place(x=360,y=450)
+ToolTip(Michiru_button,"冰堂 美智留")
 
 def click():
     namelisthide()
