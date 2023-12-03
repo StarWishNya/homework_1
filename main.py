@@ -79,7 +79,6 @@ ToolTip(button_importpath,"请导入文件夹")
 output_labels=[]
 print(file_path)
 
-
 def click():
     namelisthide()
     global file_path
