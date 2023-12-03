@@ -67,14 +67,14 @@ def import_defaultfile():
     global file_path
     file_path="data"
 
-button_importfile=tk.Button(window,text="导入其他文件",command=import_file)#创建按钮
-button_importfile.place(x=390,y=50)#显示按钮
-ToolTip(button_importfile,"请导入.txt文件")
-button_importdefaultfile=tk.Button(window,text="导入默认文件",command=import_defaultfile)#创建按钮
-button_importdefaultfile.place(x=390,y=10)#显示按钮
+button_importfile=tk.Button(window,text="导入其他文件",command=import_file)
+button_importfile.place(x=390,y=50)
+ToolTip(button_importfile,"请导入txt文件")
+button_importdefaultfile=tk.Button(window,text="导入默认文件",command=import_defaultfile)
+button_importdefaultfile.place(x=390,y=10)
 ToolTip(button_importdefaultfile,"导入默认文件")
-button_importpath=tk.Button(window,text="导入文件夹",command=import_path)#创建按钮
-button_importpath.place(x=390,y=90)#显示按钮
+button_importpath=tk.Button(window,text="导入文件夹",command=import_path)
+button_importpath.place(x=390,y=90)
 ToolTip(button_importpath,"请导入文件夹")
 output_labels=[]
 print(file_path)
