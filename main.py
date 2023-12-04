@@ -125,12 +125,17 @@ def click():
         output_labels.append(output)
     else:
         y_coordinates=70
-        for name,count in name_counts_total:
-            output=tk.Label(window,text=f"{name}: {count} 次")
+        for name in name_counts_total:
+            output=tk.Label(window,text=f"{name[0]}:",fg="blue")
             output.place(x=170,y=y_coordinates)
             output_labels.append(output)
             y_coordinates+=30
-
+            for key in name[1]:
+                output=tk.Label(window,text=f"{key}:{name[1][key]}")
+                output.place(x=170,y=y_coordinates)
+                output_labels.append(output)
+                y_coordinates += 30
+            
 button_start=tk.Button(window,text="开始统计",command=click,font=("微软雅黑",14,"bold"),fg="blue")#创建按钮
 button_start.place(x=50,y=120)#显示按钮
 button_exit=tk.Button(window,text="退出",command=window.quit)#创建按钮
