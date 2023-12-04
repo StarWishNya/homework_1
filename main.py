@@ -24,7 +24,7 @@ window.iconbitmap(os.path.join(os.path.dirname(__file__)+"/resource","icon.ico")
 
 input_names=tk.StringVar()#创建输入框的变量
 input_names.set("泽村 英梨梨")
-prompt=tk.Label(window,text="请输入要查找的人名 用空格分隔：")#创建标签
+prompt=tk.Label(window,text="请输入要查找的人名 用逗号分隔：")#创建标签
 prompt.place(x=50,y=0)#显示标签
 entry=tk.Entry(window,textvariable=input_names,font=("楷体",12,"bold"))#创建输入框
 entry.place(x=53,y=30)#显示输入框
@@ -109,7 +109,9 @@ ToolTip(Michiru_button,"冰堂 美智留")
 def click():
     namelisthide()
     global file_path
-    name_counts_total=cut.maincut(input_names.get(),file_path)
+    input_names.set(input_names.get().replace("，",","))#将中文逗号替换为英文逗号
+    new_names=input_names.get().split(",")#将输入的人名转换为列表
+    name_counts_total=name_statistics.Namestatistics(new_names,file_path)#统计人名出现的次数
     for label in output_labels:
         label.destroy()
     output_labels.clear()
@@ -123,7 +125,7 @@ def click():
         output_labels.append(output)
     else:
         y_coordinates=70
-        for name,count in name_counts_total.items():
+        for name,count in name_counts_total:
             output=tk.Label(window,text=f"{name}: {count} 次")
             output.place(x=170,y=y_coordinates)
             output_labels.append(output)
