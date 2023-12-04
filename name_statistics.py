@@ -21,5 +21,5 @@ def Namestatistics(namelist,file_path="data"):
     name_counts_total=sorted(name_counts_total.items(),key=lambda x:x[1],reverse=True)#按照出现次数排序
     return name_counts_total
 
-#Namelist=("安艺 伦也","泽村 英梨梨","加藤 惠","霞之丘 诗羽")
-#print(Namestatistics(Namelist))
+Namelist=("安艺 伦也","泽村 英梨梨","加藤 惠","霞之丘 诗羽")
+print(Namestatistics(Namelist))
