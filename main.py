@@ -5,6 +5,7 @@ import tkinter.filedialog
 import os
 from tooltip import ToolTip
 from charaicon import CharaIconButton
+import name_statistics
 
 global file_path,namelistshow_flag
 namelistshow_flag=False
@@ -132,4 +133,5 @@ button_start=tk.Button(window,text="开始统计",command=click,font=("微软雅
 button_start.place(x=50,y=120)#显示按钮
 button_exit=tk.Button(window,text="退出",command=window.quit)#创建按钮
 button_exit.pack(fill=tkinter.X,side=tk.BOTTOM)#显示按钮
+
 window.mainloop()#显示窗口
