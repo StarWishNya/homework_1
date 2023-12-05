@@ -81,6 +81,9 @@ button_importpath.place(x=400,y=90)
 ToolTip(button_importpath,"请导入文件夹")
 output_labels=[]
 print(file_path)
+button_allchara=tk.Button(window,text="全部人物",command=lambda:input_names.set("泽村 英梨梨,安艺 伦也,加藤 惠,霞之丘 诗羽,波岛 出海,冰堂 美智留,波岛 伊织,泽村 小百合,姬川 时乃,森丘 蓝子"))
+button_allchara.place(x=58,y=180)
+ToolTip(button_allchara,"点击查看全部人物列表")
 
 aki_button=CharaIconButton(window,chara_name="安艺 伦也",input_var=input_names,image_path=os.path.join(os.path.dirname(__file__)+"/resource","Aki_Tomoya.png"),width=140,height=140)
 aki_button.place(x=20,y=300)
@@ -122,7 +125,7 @@ def click():
     output_labels.clear()
     output_window=tk.Toplevel(window)
     output_window.title("统计结果")
-    output_window.resizable(False,False)#设置窗口大小不可变
+    output_window.resizable(False,True)#设置窗口大小不可变
     length=512
     width=320
     left=(window.winfo_screenwidth()-length)/2#获取窗口左上角的横坐标
@@ -140,18 +143,23 @@ def click():
         output.place(x=160,y=70)
         output_labels.append(output)
     else:
-        y_coordinates=20
+        canvas=tk.Canvas(output_window,width=512,height=320)#创建画布
+        scrollbar=tk.Scrollbar(output_window,orient=tk.VERTICAL,command=canvas.yview)#创建滚动条
+        output_frame=tk.Frame(canvas)#创建框架
+        canvas.configure(yscrollcommand=scrollbar.set)#设置画布的滚动条
+        scrollbar.pack(side=tk.RIGHT,fill=tk.Y)
+        canvas.pack(side=tk.LEFT,fill=tk.BOTH,expand=True)
+        canvas.create_window((0,0),window=output_frame,anchor=tk.NW)
+        output_frame.bind("<Configure>", lambda e:canvas.configure(scrollregion=canvas.bbox("all")))
         for name in name_counts_total:
-            output=tk.Label(output_window,text=f"{name[0]}:",fg="blue")
-            output.place(x=160,y=y_coordinates)
+            output=tk.Label(output_frame,text=f"{name[0]}:",fg="blue",justify='center')
+            output.pack(fill=tk.X,expand=True)
             output_labels.append(output)
-            y_coordinates+=30
             for key in name[1]:
-                output=tk.Label(output_window,text=f"{key}:{name[1][key]}")
-                output.place(x=170,y=y_coordinates)
+                output=tk.Label(output_frame,text=f"{key}:{name[1][key]}",justify='center')
+                output.pack(fill=tk.X,expand=True)
                 output_labels.append(output)
-                y_coordinates+=30
-            
+
 button_start=tk.Button(window,text="开始统计",command=click,font=("微软雅黑",14,"bold"),fg="blue")#创建按钮
 button_start.place(x=50,y=120)#显示按钮
 button_exit=tk.Button(window,text="退出",command=window.quit)#创建按钮
