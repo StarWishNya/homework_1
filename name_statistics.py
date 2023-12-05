@@ -1,8 +1,3 @@
-import tkinter as tk
-import tkinter.font
-import tkinter.filedialog
-import os
-from tooltip import ToolTip
 import cut
 
 def singlenamestatistics(name,file_path):
