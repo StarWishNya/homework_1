@@ -26,7 +26,7 @@ input_names=tk.StringVar()#创建输入框的变量
 input_names.set("泽村 英梨梨")
 prompt=tk.Label(window,text="请输入要查找的人名 用逗号分隔：")#创建标签
 prompt.place(x=50,y=0)#显示标签
-entry=tk.Entry(window,textvariable=input_names,font=("楷体",12,"bold"))#创建输入框
+entry=tk.Entry(window,textvariable=input_names,font=("楷体",12,"bold"),width=30)#创建输入框
 entry.place(x=53,y=30)#显示输入框
 
 def on_select(event):#事件处理函数
@@ -134,7 +134,7 @@ def click():
                 output=tk.Label(window,text=f"{key}:{name[1][key]}")
                 output.place(x=170,y=y_coordinates)
                 output_labels.append(output)
-                y_coordinates += 30
+                y_coordinates+=30
             
 button_start=tk.Button(window,text="开始统计",command=click,font=("微软雅黑",14,"bold"),fg="blue")#创建按钮
 button_start.place(x=50,y=120)#显示按钮
