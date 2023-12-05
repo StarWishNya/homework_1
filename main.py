@@ -77,7 +77,7 @@ button_importdefaultfile=tk.Button(window,text="导入默认文件",command=impo
 button_importdefaultfile.place(x=390,y=10)
 ToolTip(button_importdefaultfile,"导入默认文件")
 button_importpath=tk.Button(window,text="导入文件夹",command=import_path)
-button_importpath.place(x=390,y=90)
+button_importpath.place(x=400,y=90)
 ToolTip(button_importpath,"请导入文件夹")
 output_labels=[]
 print(file_path)
@@ -105,33 +105,49 @@ ToolTip(Izumi_button,"波岛 出海")
 Michiru_button=CharaIconButton(window,chara_name="冰堂 美智留",input_var=input_names,image_path=os.path.join(os.path.dirname(__file__)+"/resource","Hyodo_Michiru.png"),width=140,height=140)
 Michiru_button.place(x=360,y=450)
 ToolTip(Michiru_button,"冰堂 美智留")
+output_window=None
 
 def click():
     namelisthide()
     global file_path
+    global output_window
+    if output_window is not None:
+        output_window.destroy()
+        output_window=None
     input_names.set(input_names.get().replace("，",","))#将中文逗号替换为英文逗号
     new_names=input_names.get().split(",")#将输入的人名转换为列表
     name_counts_total=name_statistics.Namestatistics(new_names,file_path)#统计人名出现的次数
     for label in output_labels:
         label.destroy()
     output_labels.clear()
+    output_window=tk.Toplevel(window)
+    output_window.title("统计结果")
+    output_window.resizable(False,False)#设置窗口大小不可变
+    length=512
+    width=320
+    left=(window.winfo_screenwidth()-length)/2#获取窗口左上角的横坐标
+    top=(window.winfo_screenheight()-width)/2#获取窗口左上角的纵坐标
+    output_window.geometry("%dx%d+%d+%d"%(length,width,left,top))#设置窗口的初始位置和大小
+    output_window.iconbitmap(os.path.join(os.path.dirname(__file__)+"/resource","icon.ico"))#设置窗口图标
+    close_button=tk.Button(output_window,text="关闭",command=output_window.destroy)#创建按钮
+    close_button.pack(fill=tkinter.X,side=tk.BOTTOM)#显示按钮
     if name_counts_total=={}:#没有找到对应的人名
-        output=tk.Label(window,text="没有找到对应的人名",fg="red")
-        output.place(x=170,y=70)
+        output=tk.Label(output_window,text="没有找到对应的人名",fg="red")
+        output.place(x=160,y=70)
         output_labels.append(output)
     elif name_counts_total=="no file":#文件不存在
-        output=tk.Label(window,text="没有找到对应的文件",fg="red")
-        output.place(x=170,y=70)
+        output=tk.Label(output_window,text="没有找到对应的文件",fg="red")
+        output.place(x=160,y=70)
         output_labels.append(output)
     else:
-        y_coordinates=70
+        y_coordinates=20
         for name in name_counts_total:
-            output=tk.Label(window,text=f"{name[0]}:",fg="blue")
-            output.place(x=170,y=y_coordinates)
+            output=tk.Label(output_window,text=f"{name[0]}:",fg="blue")
+            output.place(x=160,y=y_coordinates)
             output_labels.append(output)
             y_coordinates+=30
             for key in name[1]:
-                output=tk.Label(window,text=f"{key}:{name[1][key]}")
+                output=tk.Label(output_window,text=f"{key}:{name[1][key]}")
                 output.place(x=170,y=y_coordinates)
                 output_labels.append(output)
                 y_coordinates+=30
