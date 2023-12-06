@@ -6,6 +6,8 @@ import os
 from tooltip import ToolTip
 from charaicon import CharaIconButton
 import name_statistics
+from piepic import piepic
+from datetime import datetime
 
 global file_path,namelistshow_flag
 namelistshow_flag=False
@@ -28,6 +30,9 @@ prompt=tk.Label(window,text="请输入要查找的人名 用逗号分隔：")#�
 prompt.place(x=50,y=0)#显示标签
 entry=tk.Entry(window,textvariable=input_names,font=("楷体",12,"bold"),width=30)#创建输入框
 entry.place(x=53,y=30)#显示输入框
+
+if not os.path.exists(os.path.join(os.path.dirname(__file__)+"/result")):#如果文件夹不存在
+    os.mkdir(os.path.join(os.path.dirname(__file__)+"/result"))#创建文件夹
 
 def on_select(event):#事件处理函数
     select_index=labelist.curselection()#获取选中的索引
@@ -134,32 +139,49 @@ def click():
     output_window.iconbitmap(os.path.join(os.path.dirname(__file__)+"/resource","icon.ico"))#设置窗口图标
     close_button=tk.Button(output_window,text="关闭",command=output_window.destroy)#创建按钮
     close_button.pack(fill=tkinter.X,side=tk.BOTTOM)#显示按钮
-    if name_counts_total=={}:#没有找到对应的人名
-        output=tk.Label(output_window,text="没有找到对应的人名",fg="red")
-        output.place(x=160,y=70)
-        output_labels.append(output)
-    elif name_counts_total=="no file":#文件不存在
-        output=tk.Label(output_window,text="没有找到对应的文件",fg="red")
-        output.place(x=160,y=70)
-        output_labels.append(output)
-    else:
-        canvas=tk.Canvas(output_window,width=512,height=320)#创建画布
-        scrollbar=tk.Scrollbar(output_window,orient=tk.VERTICAL,command=canvas.yview)#创建滚动条
-        output_frame=tk.Frame(canvas)#创建框架
-        canvas.configure(yscrollcommand=scrollbar.set)#设置画布的滚动条
-        scrollbar.pack(side=tk.RIGHT,fill=tk.Y)
-        canvas.pack(side=tk.LEFT,fill=tk.BOTH,expand=True)
-        canvas.create_window((0,0),window=output_frame,anchor=tk.NW)
-        output_frame.bind("<Configure>", lambda e:canvas.configure(scrollregion=canvas.bbox("all")))
-        for name in name_counts_total:
-            output=tk.Label(output_frame,text=f"{name[0]}:",fg="blue",justify='center')
-            output.pack(fill=tk.X,expand=True)
-            output_labels.append(output)
-            for key in name[1]:
-                output=tk.Label(output_frame,text=f"{key}:{name[1][key]}",justify='center')
-                output.pack(fill=tk.X,expand=True)
+    try:
+        with open(os.path.join(os.path.dirname(__file__)+"/result","log.txt"),"a",encoding="utf-8") as f:
+            if name_counts_total=={}:#没有找到对应的人名
+                output=tk.Label(output_window,text="没有找到对应的人名",fg="red")
+                output.place(x=160,y=70)
                 output_labels.append(output)
-
+                f.write(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n{file_path}\n没有找到对应的人名\n")
+            elif name_counts_total=="no file":#文件不存在
+                output=tk.Label(output_window,text="没有找到对应的文件",fg="red")
+                output.place(x=160,y=70)
+                output_labels.append(output)
+                f.write(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n{file_path}\n没有找到对应的文件\n")
+            else:
+                canvas=tk.Canvas(output_window,width=512,height=320)#创建画布
+                scrollbar=tk.Scrollbar(output_window,orient=tk.VERTICAL,command=canvas.yview)#创建滚动条
+                output_frame=tk.Frame(canvas)#创建框架
+                canvas.configure(yscrollcommand=scrollbar.set)#设置画布的滚动条
+                scrollbar.pack(side=tk.RIGHT,fill=tk.Y)
+                canvas.pack(side=tk.LEFT,fill=tk.BOTH,expand=True)
+                canvas.create_window((0,0),window=output_frame,anchor=tk.NW)
+                output_frame.bind("<Configure>", lambda e:canvas.configure(scrollregion=canvas.bbox("all")))
+                piedata={}
+                f.write(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n{file_path}\n")
+                for name in name_counts_total:
+                    output=tk.Label(output_frame,text=f"{name[0]}:",fg="blue",justify='center')
+                    output.pack(fill=tk.X,expand=True)
+                    output_labels.append(output)
+                    fullname=name_statistics.fullname(name[0])
+                    piedata[fullname]=name[1][fullname]
+                    f.write(f"{name[0]}:{name[1][fullname]}\n")
+                    for key in name[1]:
+                        output=tk.Label(output_frame,text=f"{key}:{name[1][key]}",justify='center')
+                        output.pack(fill=tk.X,expand=True)
+                        output_labels.append(output)
+                        f.write(f"{key}:{name[1][key]}\n")
+                piepic(piedata)
+    except Exception as e:
+        print(e)
+        output=tk.Label(output_window,text="出现错误",fg="red")
+        output.place(x=160,y=70)
+        output_labels.append(output)
+        with open(os.path.join(os.path.dirname(__file__)+"/result","log.txt"),"a",encoding="utf-8") as f:
+            f.write(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n{file_path}\n出现错误\n")
 button_start=tk.Button(window,text="开始统计",command=click,font=("微软雅黑",14,"bold"),fg="blue")#创建按钮
 button_start.place(x=50,y=120)#显示按钮
 button_exit=tk.Button(window,text="退出",command=window.quit)#创建按钮
