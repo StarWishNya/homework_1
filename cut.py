@@ -1,7 +1,7 @@
 import os
 import jieba
 from collections import Counter
-def extract_chinese_names(text):#提取中文名字
+def extract_names(text):#提取中文名字
     names=[]
     words=jieba.cut(text,cut_all=False,HMM=True)#使用jieba库进行分词
     for word in words:
@@ -13,7 +13,7 @@ def process_file(file_path,target_names):#处理文件
     try:
         with open(file_path,'r',encoding='utf-8')as file:#打开文件
             text=file.read()
-            names_in_file=extract_chinese_names(text)#提取中文名字
+            names_in_file=extract_names(text)#提取中文名字
             name_counts={name:names_in_file.count(name) for name in target_names}#统计名字出现的次数
             return name_counts
     except FileNotFoundError:#处理文件不存在的情况
