@@ -114,6 +114,9 @@ Michiru_button.place(x=360,y=450)
 ToolTip(Michiru_button,"冰堂 美智留")
 output_window=None
 
+logtime=datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
+logtime+="_log.txt"#日志文件名
+
 def click():
     namelisthide()
     global file_path
@@ -139,7 +142,7 @@ def click():
     close_button=tk.Button(output_window,text="关闭",command=output_window.destroy)#创建按钮
     close_button.pack(fill=tkinter.X,side=tk.BOTTOM)#显示按钮
     try:
-        with open(os.path.join(os.path.dirname(__file__)+"/result","log.txt"),"a",encoding="utf-8") as f:
+        with open(os.path.join(os.path.dirname(__file__)+"/result",logtime),"a",encoding="utf-8") as f:
             if name_counts_total=={}:#没有找到对应的人名
                 output=tk.Label(output_window,text="没有找到对应的人名",fg="red")
                 output.place(x=160,y=70)
@@ -167,7 +170,7 @@ def click():
                     output_labels.append(output)
                     fullname=name_statistics.fullname(name[0])
                     piedata[fullname]=name[1][fullname]
-                    f.write(f"{name[0]}:{name[1][fullname]}\n")
+                    f.write(f"{name[0]}:\n")
                     for key in name[1]:
                         output=tk.Label(output_frame,text=f"{key}:{name[1][key]}",justify='center')
                         output.pack(fill=tk.X,expand=True)
@@ -179,7 +182,7 @@ def click():
         output=tk.Label(output_window,text="出现错误",fg="red")
         output.place(x=160,y=70)
         output_labels.append(output)
-        with open(os.path.join(os.path.dirname(__file__)+"/result","log.txt"),"a",encoding="utf-8") as f:
+        with open(os.path.join(os.path.dirname(__file__)+"/result",logtime),"a",encoding="utf-8") as f:
             f.write(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n{file_path}\n出现错误\n")
 button_start=tk.Button(window,text="开始统计",command=click,font=("微软雅黑",14,"bold"),fg="blue")#创建按钮
 button_start.place(x=50,y=120)#显示按钮
