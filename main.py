@@ -1,4 +1,3 @@
-import cut
 import tkinter as tk
 import tkinter.font
 import tkinter.filedialog
