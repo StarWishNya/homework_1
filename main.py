@@ -1,12 +1,13 @@
-import tkinter as tk
-import tkinter.font
-import tkinter.filedialog
 import os
-from tooltip import ToolTip
-from charaicon import CharaIconButton
-import name_statistics
-from piepic import piepic
+import tkinter as tk
+import tkinter.filedialog
+import tkinter.font
 from datetime import datetime
+
+import name_statistics
+from charaicon import CharaIconButton
+from piepic import piepic
+from tooltip import ToolTip
 
 global file_path,namelistshow_flag
 namelistshow_flag=False

@@ -1,6 +1,9 @@
 import os
-import jieba
 from collections import Counter
+
+import jieba
+
+
 def extract_names(text):#提取中文名字
     names=[]
     words=jieba.cut(text,cut_all=False,HMM=True)#使用jieba库进行分词
