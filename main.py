@@ -5,11 +5,18 @@ from pathlib import Path
 
 from keras.src.backend.common.name_scope import current_path
 
+import name_identify
 import name_statistics
 from charaicon import CharaIconButton
 from piepic import piepic
 from tooltip import ToolTip
 from download_utils import download_click
+
+import hanlp
+
+hanlp.pretrained.pos.ALL
+HanLP = hanlp.load(hanlp.pretrained.mtl.CLOSE_TOK_POS_NER_SRL_DEP_SDP_CON_ELECTRA_BASE_ZH)
+get_pos = hanlp.load(hanlp.pretrained.pos.CTB9_POS_ELECTRA_SMALL)
 
 global file_path, namelistshow_flag
 namelistshow_flag = False
@@ -196,11 +203,21 @@ def download_and_set_path():
     current_path_label = tk.Label(window, text=f"当前路径：{file_path}", font=("微软雅黑", 12, "bold"))
     download_click()
 
+def ai_identify():
+    global file_path
+    names = name_identify.static_name_from_data(file_path)
+
+
+
+
 button_download = tk.Button(window, text="下载指定id的小说", command=download_and_set_path, font=("微软雅黑", 14, "bold"), fg="blue")
 button_download.place(x=320, y=140)
 
 current_path_label = tk.Label(window, text=f"当前路径：{file_path}", font=("微软雅黑", 12, "bold"))
 current_path_label.place(x=50, y=230)
+
+button_ai_identify = tk.Button(window,text = "AI人名识别",command=ai_identify,font=("微软雅黑",14,"bold"),fg="blue")
+button_ai_identify.place(x=320,y=180)
 
 window.mainloop()
 
