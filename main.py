@@ -1,18 +1,17 @@
 import tkinter as tk
-from tkinter import filedialog, font
+import webbrowser
 from datetime import datetime
 from pathlib import Path
+from tkinter import filedialog, font
 
-from keras.src.backend.common.name_scope import current_path
+import hanlp
 
 import name_identify
 import name_statistics
 from charaicon import CharaIconButton
+from download_utils import download_click
 from piepic import piepic
 from tooltip import ToolTip
-from download_utils import download_click
-
-import hanlp
 
 hanlp.pretrained.pos.ALL
 HanLP = hanlp.load(hanlp.pretrained.mtl.CLOSE_TOK_POS_NER_SRL_DEP_SDP_CON_ELECTRA_BASE_ZH)
@@ -125,16 +124,20 @@ output_window = None
 
 logtime = datetime.now().strftime('%Y-%m-%d-%H-%M-%S') + "_log.txt"
 
-def click():
+def click(function = 'default'):
     name_list_hide()
     global file_path, output_window
     print(file_path)
     if output_window is not None:
         output_window.destroy()
         output_window = None
-    input_names.set(input_names.get().replace("，", ","))
-    new_names = input_names.get().split(",")
-    name_counts_total = name_statistics.Namestatistics(new_names, file_path)
+    if function == 'default':
+        input_names.set(input_names.get().replace("，", ","))
+        new_names = input_names.get().split(",")
+        name_counts_total = name_statistics.Namestatistics(new_names, file_path)
+    else:
+        name_counts_total = name_identify.static_name_from_data(file_path)
+        name_counts_total = name_statistics.name_format(name_counts_total)
     for label in output_labels:
         label.destroy()
     output_labels.clear()
@@ -198,17 +201,11 @@ button_exit = tk.Button(window, text="退出", command=window.quit)
 button_exit.pack(fill=tk.X, side=tk.BOTTOM)
 
 def download_and_set_path():
+    webbrowser.open("www.wenku8.net")
     global file_path, current_path_label
     file_path = 'download'
     current_path_label = tk.Label(window, text=f"当前路径：{file_path}", font=("微软雅黑", 12, "bold"))
     download_click()
-
-def ai_identify():
-    global file_path
-    names = name_identify.static_name_from_data(file_path)
-
-
-
 
 button_download = tk.Button(window, text="下载指定id的小说", command=download_and_set_path, font=("微软雅黑", 14, "bold"), fg="blue")
 button_download.place(x=320, y=140)
@@ -216,8 +213,8 @@ button_download.place(x=320, y=140)
 current_path_label = tk.Label(window, text=f"当前路径：{file_path}", font=("微软雅黑", 12, "bold"))
 current_path_label.place(x=50, y=230)
 
-button_ai_identify = tk.Button(window,text = "AI人名识别",command=ai_identify,font=("微软雅黑",14,"bold"),fg="blue")
-button_ai_identify.place(x=320,y=180)
+button_ai_identify = tk.Button(window, text="AI人名识别", command=lambda: click('ai'), font=("微软雅黑", 14, "bold"), fg="blue")
+button_ai_identify.place(x=375, y=190)
 
 window.mainloop()
 

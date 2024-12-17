@@ -1,3 +1,5 @@
+import os
+
 import hanlp
 
 hanlp.pretrained.pos.ALL
@@ -40,27 +42,31 @@ def test_static_name_from_data():
     print(names)
 
 def static_name_from_data(file):
+    names =  {}
+    #如果file 为文件夹，则遍历文件夹下所有文件
+    if os.path.isdir(file):
+        for root, dirs, files in os.walk(file):
+            for file in files:
+                if file.endswith('.txt'):
+                    names.update(static_name_from_data(os.path.join(root, file)))
     with open(file, 'r', encoding='utf-8') as f:
         text = f.read()
     sentences = split_sentence(text)
     names = {}
+    number = len(sentences)
+    count = 0
     for sentence in sentences:
         words = split_word(sentence)
         sentence_name = name_identify(words)
         for name in sentence_name:
             names[name] = names.get(name, 0) + sentence_name[name]
+        count += 1
+        print(f'\r{count}/{number}', end='')
     #删除出现次数小于10的人名
     names = {name: names[name] for name in names if names[name] > 10}
     return names
 
 if __name__ == '__main__':
-    test_static_name_from_data()
-    '''
-    text = ("张三是个好人，李四是个坏人。\n"
-            "王五是个好人，赵六是个坏人。")
-    sentences = split_sentence(text)
-    for sentence in sentences:
-        words = split_word(sentence)
-        names = name_identify(words)
-        print(names)
-    '''
+    file = 'download/2930.txt'
+    names = static_name_from_data(file)
+    print(names)
